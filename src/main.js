@@ -1,8 +1,10 @@
 import {createCardElement, Suit, Card, flipCard} from "../components/card/card.js";
 import {createBanner} from "../components/banner/banner.js";
 import {createDeck, deal} from "../components/deck/deck.js";
-import {startTimer, stopTimer} from "./timer.js";
+import {formatTime, startTimer, stopTimer, totalMilliseconds} from "./timer.js";
 import {createBoard} from "../components/board/board.js";
+import {createLeaderboard, createRow} from "../components/leaderboard/leaderboard.js";
+import {score} from "./scoring.js";
 
 
 /**
@@ -26,9 +28,9 @@ deck.sort(() => Math.random() - .5); // shuffling
  */
 export const boardState = [[],[],[],[],[],[],[],[],[],[]];
 
-const bannerDom = createBanner();
+const bannerDom = await createBanner();
 
-const deckDom = createDeck();
+const deckDom = await createDeck();
 
 deck.forEach(({element}) => {
   flipCard(element);
@@ -41,7 +43,7 @@ deckDom.addEventListener('click', event => {
   return deal(10);
 });
 
-const boardDom = createBoard();
+const boardDom = await createBoard();
 boardState.forEach((col, index) => {
   const colDom = boardDom.children.item(index);
   col.push({card: null, element: colDom.firstElementChild});
@@ -50,4 +52,25 @@ boardState.forEach((col, index) => {
 await deal(54, 44);
 
 startTimer();
-bannerDom.children.namedItem('retire').addEventListener('click', () => stopTimer());
+bannerDom.children.namedItem('retire').addEventListener('click', async (event) => {
+  event.target.blur();
+  stopTimer();
+  const leaderBoard = await createLeaderboard();
+  const leaderTable = leaderBoard.querySelector('table');
+  const leaderBoardScoring = [...Array.from({length: 5}, () => ({ // TODO get from API
+    name: 'john',
+    score: Math.floor(Math.random() * 990),
+    time: Math.floor(Math.random() * 100000),
+  })),
+    {name: 'Me', score, time: totalMilliseconds}].sort(({score: a}, {score: b}) => b - a); // TODO get from token
+
+  for (const {score, name, time} of leaderBoardScoring) {
+    leaderTable.appendChild(await createRow(name, score, formatTime(time)));
+  }
+
+  const okButton = leaderBoard.querySelector('button');
+  okButton.addEventListener('click', () => {
+    leaderBoard.remove();
+    // TODO nav to select screen
+  })
+});
