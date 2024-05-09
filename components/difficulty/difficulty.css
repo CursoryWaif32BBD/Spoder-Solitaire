@@ -1,0 +1,92 @@
+/* styles.css */
+:root {
+    --bg-color: #202020;
+    --text-color: #fff;
+    --button-bg: #3a3a3a;
+    --button-hover: #505050;
+    --button-active: #404040;
+    --font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
+    --main-padding: 10em;
+    --btn-margin: 1em;
+    --btn-padding: 0.8em 2em;
+    --btn-border-radius: 0.5em;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('../../public/corner-spider.svg'), url('../../public/suits.svg'), url('../../public/corner-left.svg');
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-position: top right, top center, bottom left;
+    background-size: 10em, 10em; /* Adjust size as needed */
+}
+
+main {
+    text-align: center;
+    padding: var(--main-padding);
+}
+
+h1 {
+    margin-bottom: 2em;
+    font-size: 2.5em;
+}
+
+button {
+    display: inline-block;
+    margin: var(--btn-margin);
+    padding: var(--btn-padding);
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    border: none;
+    border-radius: var(--btn-border-radius);
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--button-hover);
+}
+
+button:active {
+    background-color: var(--button-active);
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 768px) {
+    body {
+        background-position: top right, bottom left;
+        background-size: 8em, 8em; /* Adjust size as needed */
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        background-position: top right, bottom left;
+        background-size: 6em, 6em; /* Adjust size as needed */
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    button {
+        font-size: 1.2em;
+        padding: 0.5em 1.5em;
+    }
+
+    main {
+        padding: 5em;
+    }
+}
